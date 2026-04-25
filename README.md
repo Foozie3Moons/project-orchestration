@@ -19,8 +19,14 @@ Multi-agent project orchestration for Claude Code. Provides meta-agents, workflo
 ## What it does
 
 ```
-idea → architect → spec → decomposer → tasks → orchestrator → implementation agents
+                              ┌→ architect → spec
+                              │
+user ↔ orchestrator (root) ───┼→ decomposer → tasks
+       [discuss | dispatch]   │
+                              └→ implementation agents (parallel)
 ```
+
+The orchestrator is the root Claude Code session. In **discussion mode** it brainstorms with you, pushes back on ideas, and surfaces edge cases. In **execution mode** it dispatches sub-agents and drives tasks to completion.
 
 The plugin provides:
 - **Meta-agents** that produce documents and dispatch work (but don't write code)

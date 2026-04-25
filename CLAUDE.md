@@ -35,13 +35,13 @@ The `agent-creator` generates these from your architecture spec's bounded contex
 ## Workflow
 
 ```
-idea → architect → spec
-spec → agent-creator → implementation fleet
-spec → decomposer → task list
-task list → orchestrator → dispatch implementation agents
+user ↔ orchestrator (root) → architect → spec
+                           → agent-creator → implementation fleet  
+                           → decomposer → task list
+                           → implementation agents (parallel)
 ```
 
-The meta-agents (orchestrator, architect, decomposer, agent-creator) do not write code. They produce documents and dispatch work.
+The orchestrator is the root session. In discussion mode it brainstorms; in execution mode it dispatches. Sub-agents (architect, decomposer, implementation agents) cannot spawn other agents.
 
 ## Document conventions
 
