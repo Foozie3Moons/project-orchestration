@@ -26,7 +26,7 @@ user ↔ orchestrator (root) ───┼→ decomposer → tasks
                               └→ implementation agents (parallel)
 ```
 
-The orchestrator is the root Claude Code session. In **discussion mode** it brainstorms with you, pushes back on ideas, and surfaces edge cases. In **execution mode** it dispatches sub-agents and drives tasks to completion.
+The orchestrator is the root Claude Code session. In **discussion mode** it thinks through ideas with you. In **execution mode** it dispatches sub-agents and drives tasks to completion.
 
 The plugin provides:
 - **Meta-agents** that produce documents and dispatch work (but don't write code)
