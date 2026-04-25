@@ -2,6 +2,20 @@
 
 Multi-agent project orchestration for Claude Code. Provides meta-agents, workflow skills, rule templates, and document conventions for running complex projects with parallel agent dispatch.
 
+## Why use this
+
+**Scale beyond a single context window.** Large projects exceed what one agent can hold in context. This plugin splits work across focused sub-agents, each with only the context they need.
+
+**Parallelize implementation.** Independent tasks dispatch to separate agents simultaneously. A 10-task feature that takes 2 hours sequentially takes 30 minutes with 4 parallel agents.
+
+**Enforce consistency.** Rule templates and agent definitions ensure every agent follows the same patterns, conventions, and boundaries. No drift between what agent A and agent B produce.
+
+**Separate planning from execution.** Meta-agents (architect, decomposer) think through the problem. Implementation agents execute. The orchestrator coordinates. Clean separation of concerns.
+
+**Recover context across sessions.** The historian can answer "what did we decide?" and "what was I working on?" by searching session history, dispatch logs, and memory.
+
+**Exclusive file ownership.** Each task owns specific files. No merge conflicts between parallel agents. The decomposer enforces this at planning time.
+
 ## What it does
 
 ```
