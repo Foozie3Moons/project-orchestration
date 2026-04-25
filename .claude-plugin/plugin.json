@@ -1,0 +1,23 @@
+{
+  "name": "project-orchestration",
+  "description": "Multi-agent project orchestration: architect specs, decompose tasks, generate project-specific agent fleets, dispatch work, recover context across sessions",
+  "version": "0.1.0",
+  "author": {
+    "name": "Foozie"
+  },
+  "license": "MIT",
+  "keywords": [
+    "orchestration",
+    "agents",
+    "architecture",
+    "decomposition",
+    "dispatch",
+    "context-recovery",
+    "rules"
+  ],
+  "skills": [
+    "skills/setup",
+    "skills/adr-writer",
+    "skills/context-tiering"
+  ]
+}

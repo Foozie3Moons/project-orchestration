@@ -1,0 +1,14 @@
+{
+  "_description": "Run TypeScript type check after editing .ts/.tsx files",
+  "_trigger": "PostToolUse:Edit",
+  "_usage": "Copy the 'hook' object into your hooks.json PostToolUse array",
+
+  "matcher": "Edit",
+  "hooks": [
+    {
+      "type": "command",
+      "command": "if [[ \"$CLAUDE_FILE_PATH\" =~ \\.(ts|tsx)$ ]]; then cd \"$CLAUDE_PROJECT_ROOT\" && npx tsc --noEmit 2>&1 | head -30 || true; fi",
+      "timeout": 30000
+    }
+  ]
+}

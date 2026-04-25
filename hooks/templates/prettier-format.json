@@ -1,0 +1,14 @@
+{
+  "_description": "Auto-format edited files with Prettier",
+  "_trigger": "PostToolUse:Edit",
+  "_usage": "Copy the 'hook' object into your hooks.json PostToolUse array",
+
+  "matcher": "Edit",
+  "hooks": [
+    {
+      "type": "command",
+      "command": "if [[ \"$CLAUDE_FILE_PATH\" =~ \\.(js|jsx|ts|tsx|json|md|css|scss)$ ]]; then cd \"$CLAUDE_PROJECT_ROOT\" && npx prettier --write \"$CLAUDE_FILE_PATH\" 2>/dev/null || true; fi",
+      "timeout": 10000
+    }
+  ]
+}

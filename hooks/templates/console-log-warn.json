@@ -1,0 +1,14 @@
+{
+  "_description": "Warn about console.log statements in edited JavaScript/TypeScript files",
+  "_trigger": "PostToolUse:Edit",
+  "_usage": "Copy the 'hook' object into your hooks.json PostToolUse array",
+
+  "matcher": "Edit",
+  "hooks": [
+    {
+      "type": "command",
+      "command": "if [[ \"$CLAUDE_FILE_PATH\" =~ \\.(js|jsx|ts|tsx)$ ]]; then grep -n 'console\\.log' \"$CLAUDE_FILE_PATH\" 2>/dev/null && echo '⚠️  console.log found - remove before committing' || true; fi",
+      "timeout": 5000
+    }
+  ]
+}
