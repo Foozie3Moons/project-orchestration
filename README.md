@@ -41,14 +41,32 @@ This will:
 
 ## Agents
 
-| Agent | Purpose | Writes code? |
-|-------|---------|--------------|
-| `orchestrator` | Discussion partner + dispatch driver (root session) | No |
-| `architect` | Discovery conversation → architecture spec | No |
-| `decomposer` | Spec → parallelizable task list | No |
-| `agent-creator` | Spec → project-specific implementation agents | No |
-| `cleanup-engineer` | Dead code removal, codebase shrinking | Deletes only |
-| `historian` | Context recovery across sessions | No |
+### Meta-agents (included in plugin)
+
+These agents produce documents and dispatch work — they don't write implementation code.
+
+| Agent | Purpose |
+|-------|---------|
+| `orchestrator` | Discussion partner + dispatch driver (root session) |
+| `architect` | Discovery conversation → architecture spec |
+| `decomposer` | Spec → parallelizable task list |
+| `agent-creator` | Spec → project-specific implementation agents |
+| `cleanup-engineer` | Dead code removal, codebase shrinking |
+| `historian` | Context recovery across sessions |
+
+### Implementation agents (generated per-project)
+
+The `agent-creator` generates these based on your architecture spec. Examples:
+
+| Agent | Purpose |
+|-------|---------|
+| `infra-engineer` | Core infrastructure, config, database, build setup |
+| `domain-engineer` | Domain modules, repositories, services |
+| `api-engineer` | REST/GraphQL endpoints, controllers, DTOs |
+| `frontend-engineer` | React components, hooks, state management |
+| `auth-engineer` | Authentication, authorization, session handling |
+
+These are project-specific — the agent-creator derives them from your bounded contexts.
 
 **Important:** The orchestrator runs as the root Claude Code session, not as a sub-agent. Sub-agents cannot spawn other sub-agents, so the orchestrator must be the main session to dispatch implementation agents.
 

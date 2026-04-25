@@ -11,6 +11,8 @@ Run `/project-orchestration:setup` in your project to:
 
 ## Agents
 
+### Meta-agents (included)
+
 | Agent | Role | Model |
 |-------|------|-------|
 | `orchestrator` | Discussion + dispatch; drives task lists to completion | opus |
@@ -19,6 +21,12 @@ Run `/project-orchestration:setup` in your project to:
 | `agent-creator` | Spec → project-specific implementation agents | opus |
 | `cleanup-engineer` | Dead code removal, codebase shrinking | sonnet |
 | `historian` | Context recovery across sessions | sonnet |
+
+### Implementation agents (generated per-project)
+
+Examples: `infra-engineer`, `domain-engineer`, `api-engineer`, `frontend-engineer`, `auth-engineer`
+
+The `agent-creator` generates these from your architecture spec's bounded contexts.
 
 **Constraint:** The orchestrator runs as the root Claude Code session. Sub-agents cannot spawn other sub-agents, so only the root session can dispatch.
 
