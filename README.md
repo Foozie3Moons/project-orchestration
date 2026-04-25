@@ -43,20 +43,22 @@ This will:
 
 | Agent | Purpose | Writes code? |
 |-------|---------|--------------|
-| `orchestrator` | Discussion partner + dispatch driver | No |
+| `orchestrator` | Discussion partner + dispatch driver (root session) | No |
 | `architect` | Discovery conversation → architecture spec | No |
 | `decomposer` | Spec → parallelizable task list | No |
 | `agent-creator` | Spec → project-specific implementation agents | No |
 | `cleanup-engineer` | Dead code removal, codebase shrinking | Deletes only |
 | `historian` | Context recovery across sessions | No |
 
-Dispatch via the Agent tool:
+**Important:** The orchestrator runs as the root Claude Code session, not as a sub-agent. Sub-agents cannot spawn other sub-agents, so the orchestrator must be the main session to dispatch implementation agents.
+
+Dispatch sub-agents via the Agent tool:
 
 ```javascript
 Agent({
-  subagent_type: "orchestrator",
-  description: "Continue task execution",
-  prompt: "Resume work on the auth feature. Task list is in docs/tasks/auth.md."
+  subagent_type: "architect",
+  description: "Design auth feature",
+  prompt: "Run discovery for user authentication. Output spec to docs/specs/auth.md."
 })
 ```
 
@@ -74,7 +76,7 @@ Agent({
 
 ```
 User: "I want to add user authentication"
-→ Dispatch architect agent
+→ (Root session) Dispatch architect agent
 → Discovery conversation (pain point, constraints, stack)
 → Output: docs/specs/auth.md
 ```
@@ -82,26 +84,29 @@ User: "I want to add user authentication"
 ### 2. Agent generation (optional)
 
 ```
-→ Dispatch agent-creator with the spec
+→ (Root session) Dispatch agent-creator with the spec
 → Output: .claude/agents/auth-engineer.md (and others as needed)
 ```
 
 ### 3. Decomposition
 
 ```
-→ Dispatch decomposer with the spec
+→ (Root session) Dispatch decomposer with the spec
 → Output: docs/tasks/auth.md (phased, parallelizable tasks)
 ```
 
 ### 4. Execution
 
 ```
-→ Dispatch orchestrator with "go" or "dispatch"
-→ Orchestrator reads task list, dispatches implementation agents
+User: "go" or "dispatch"
+→ Root session becomes the orchestrator
+→ Reads task list, dispatches implementation agents
 → Verifies acceptance criteria after each task
 → Commits per task
 → Reports progress
 ```
+
+The root session (orchestrator) is the only agent that can dispatch sub-agents. The architect, decomposer, and implementation agents are all dispatched as sub-agents and cannot spawn further agents.
 
 ## Rules
 

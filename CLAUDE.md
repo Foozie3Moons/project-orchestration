@@ -20,6 +20,8 @@ Run `/project-orchestration:setup` in your project to:
 | `cleanup-engineer` | Dead code removal, codebase shrinking | sonnet |
 | `historian` | Context recovery across sessions | sonnet |
 
+**Constraint:** The orchestrator runs as the root Claude Code session. Sub-agents cannot spawn other sub-agents, so only the root session can dispatch.
+
 ## Workflow
 
 ```
