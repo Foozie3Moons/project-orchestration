@@ -24,7 +24,9 @@ Run `/project-orchestration:setup` in your project to:
 
 ### Implementation agents (generated per-project)
 
-Examples: `infra-engineer`, `domain-engineer`, `api-engineer`, `frontend-engineer`, `auth-engineer`
+**Horizontal (layer-based):** `infra-engineer`, `domain-engineer`, `api-engineer`
+
+**Vertical (feature-based):** `chat-engineer`, `auth-engineer`, `billing-engineer`, `dashboard-engineer`
 
 The `agent-creator` generates these from your architecture spec's bounded contexts.
 

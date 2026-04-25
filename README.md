@@ -56,17 +56,26 @@ These agents produce documents and dispatch work — they don't write implementa
 
 ### Implementation agents (generated per-project)
 
-The `agent-creator` generates these based on your architecture spec. Examples:
+The `agent-creator` generates these based on your architecture spec. Two patterns:
+
+**Horizontal (layer-based)** — owns a layer across the whole codebase:
 
 | Agent | Purpose |
 |-------|---------|
 | `infra-engineer` | Core infrastructure, config, database, build setup |
 | `domain-engineer` | Domain modules, repositories, services |
 | `api-engineer` | REST/GraphQL endpoints, controllers, DTOs |
-| `frontend-engineer` | React components, hooks, state management |
-| `auth-engineer` | Authentication, authorization, session handling |
 
-These are project-specific — the agent-creator derives them from your bounded contexts.
+**Vertical (feature-based)** — owns a feature across the full stack:
+
+| Agent | Purpose |
+|-------|---------|
+| `chat-engineer` | Chat feature end-to-end (backend + frontend) |
+| `auth-engineer` | Authentication flow end-to-end |
+| `billing-engineer` | Billing/payments feature end-to-end |
+| `dashboard-engineer` | Dashboard CRUD features full-stack |
+
+The agent-creator decides horizontal vs vertical based on your spec's bounded contexts. Vertical agents are common when a feature has tight coupling across layers.
 
 **Important:** The orchestrator runs as the root Claude Code session, not as a sub-agent. Sub-agents cannot spawn other sub-agents, so the orchestrator must be the main session to dispatch implementation agents.
 

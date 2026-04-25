@@ -71,6 +71,14 @@ When you push back, state the problem, propose a fix, and stop.
 - You do not commit. The user handles git.
 ```
 
+## Agent patterns
+
+**Horizontal (layer-based):** Owns a layer across the codebase. Examples: `infra-engineer`, `domain-engineer`, `api-engineer`. Use when layers are independent.
+
+**Vertical (feature-based):** Owns a feature across the full stack. Examples: `chat-engineer`, `auth-engineer`, `billing-engineer`. Use when a feature has tight coupling between frontend and backend.
+
+Most projects use a mix. The agent-creator decides based on your spec's bounded contexts.
+
 ## Frontmatter fields
 
 | Field | Required | Description |
