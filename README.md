@@ -16,6 +16,59 @@ Multi-agent project orchestration for Claude Code. Provides meta-agents, workflo
 
 **Exclusive file ownership.** Each task owns specific files. No merge conflicts between parallel agents. The decomposer enforces this at planning time.
 
+### Example workflows
+
+---
+
+#### Frontend restructure (17 parallel tasks)
+
+**Scenario:** Restructure a React dashboard from ad-hoc layout into layered architecture (api, pages, layouts, components, molecules).
+
+**Workflow:**
+1. Architect produces spec defining the target layer structure
+2. Decomposer generates 17 independent file-move tasks with exclusive ownership
+3. Orchestrator dispatches 3 vertical agents simultaneously: `dashboard-engineer`, `chat-engineer`, `settings-engineer`
+4. ~12 minutes wall-clock vs ~2 hours sequential
+
+Each agent owns a feature slice. No merge conflicts because file ownership is exclusive.
+
+---
+
+#### Backend layering (8 parallel tasks)
+
+**Scenario:** Reorganize Nest modules into five layers: `api/` → `use-case/` → `application/` → `data-access/` → `domain/`.
+
+**Workflow:**
+1. ADR documents the layer boundaries and import direction
+2. Decomposer assigns one module per task to `domain-engineer`
+3. 8 tasks dispatch simultaneously
+4. One task blocks on a missing dependency — orchestrator auto-retries after prerequisite completes
+
+Strict layer direction enforced by rules copied during setup.
+
+---
+
+#### Full feature build (10 tasks, dependency-aware)
+
+**Scenario:** Build an activity log feature showing all agent executions across multiple entry points.
+
+**Workflow:**
+1. Architect runs discovery → outputs `docs/specs/activity-log.md`
+2. Agent-creator generates `activity-engineer` from the spec
+3. Decomposer produces 10 tasks with explicit dependencies (T1/T2/T3 parallel, T4 waits on T3)
+4. Orchestrator dispatches respecting dependencies
+5. End-to-end in ~3 hours
+
+The dispatch log tracks which tasks are running, blocked, or complete.
+
+---
+
+#### Context recovery
+
+Specs and dispatch logs serve as persistent context. The historian can answer "what was I working on?" by searching logs and documents — no need to re-explain state when resuming.
+
+---
+
 ## What it does
 
 ```
@@ -205,15 +258,16 @@ Copy to your `.claude/hooks/hooks.json` or `~/.claude/settings.json`.
 
 ## Dispatch logging
 
-The plugin includes hooks that log agent dispatches to `.claude/dispatch-log.jsonl`:
+A hook on the Agent tool logs dispatches to `.claude/dispatch-log.jsonl`:
 
 ```jsonl
-{"ts":"...","event":"start","tool_use_id":"...","agent":"infra-engineer","task":"T-1"}
-{"ts":"...","event":"end","tool_use_id":"...","status":"returned","duration_s":42}
+{"ts":"...","event":"start","tool_use_id":"...","agent":"infra-engineer","task":"T-1","description":"..."}
+{"ts":"...","event":"end","tool_use_id":"...","agent":"infra-engineer","status":"returned","duration_s":42}
 ```
 
-Query with:
+The orchestrator uses bracketed task-id prefixes in dispatch descriptions (`[T-1] Build thing`) for filtering.
 
+Query via `history.sh`:
 ```bash
 bash .claude/scripts/history.sh dispatches --task T-1
 bash .claude/scripts/history.sh dispatches --agent infra-engineer --since 7
